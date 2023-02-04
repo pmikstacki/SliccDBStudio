@@ -1,0 +1,42 @@
+﻿@using SliccDBStudio.Data
+@inject ISnackbar Snackbar
+@foreach (LabelModel model in Labels)
+    {
+        <Label Model="model" OnRemoveLabel="DeleteLabel"></Label>
+    }
+<MudGrid>
+    <MudItem xs="10">
+        <MudTextField Placeholder="Enter Label..." @bind-Value="LabelName" Variant="Variant.Outlined"></MudTextField>
+    </MudItem>
+    <MudItem xs="2">
+        <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="CreateLabel"></MudIconButton>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    [Parameter]
+    public List<LabelModel> Labels { get; set; } = new List<LabelModel>();
+
+
+    public string LabelName { get; set; }
+
+    private void CreateLabel()
+    {
+        if (Labels.Exists(x => x.Label == LabelName))
+        {
+            Snackbar.Add("Label with that name already exists!");
+            return;
+        }
+        Labels.Add(new LabelModel()
+        {
+            Label = LabelName
+        });
+    }
+
+    private void DeleteLabel(LabelModel label)
+    {
+        Labels.Remove(label);
+        StateHasChanged();
+    }
+}

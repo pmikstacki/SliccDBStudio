@@ -1,0 +1,28 @@
+﻿
+    <MudText Typo="Typo.body2">Properties</MudText>
+    <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="AddProperty"/>
+    @for (int i = 0; i < Properties.Count; i++)
+    {
+        <Property Value="Properties[i]" OtherProperties="Properties" DeleteProperty="DeleteProperty"></Property>
+    }
+
+@code
+{
+    [Parameter]
+    public List<Data.Property> Properties { get; set; } = new List<Data.Property>();
+
+
+    private void DeleteProperty(Data.Property property)
+    {
+        Properties.Remove(property);
+        StateHasChanged();
+    }
+
+    private void AddProperty()
+    {
+        Properties.Add(new Data.Property());
+        StateHasChanged();
+
+    }
+
+}

@@ -1,0 +1,141 @@
+﻿@using Microsoft.AspNetCore.Components
+@using SliccDBStudio.Services
+@using BlazorTextEditor.RazorLib.Model
+@using BlazorTextEditor.RazorLib.ViewModel
+@using BlazorTextEditor.RazorLib
+@using Microsoft.CodeAnalysis
+@using Microsoft.CodeAnalysis.CSharp.Scripting
+@using Microsoft.CodeAnalysis.Scripting
+@using Newtonsoft.Json
+@using SliccDB.Core
+@using SliccDB.Fluent
+@using SliccDBStudio.Data
+@using VisNetwork.Blazor.Models
+@using Node = SliccDB.Core.Node
+@inject ISnackbar Snackbar
+@inject ITextEditorService TextEditorService
+@inject GraphDisplayService GraphDisplayService
+@inject DatabaseConnectionService DatabaseConnectionService
+<MudItem xs="12" Style="position: fixed;bottom: 0px;width: 100%;">
+    <MudGrid>
+        <MudItem xs="11">
+            <MudProgressLinear Color="Color.Primary" Indeterminate="@ShowProgress" Class="my-7" />
+            <TextEditorViewModelDisplay @ref="textEditor" TextEditorViewModelKey="IndexTextEditorViewModelKey"/>
+        </MudItem>
+        <MudItem xs="1" >
+            <MudButton StartIcon="@Icons.Material.Filled.Build" OnClick="RunScript" Style="margin-top: 30px;">Run</MudButton>
+        </MudItem>
+    </MudGrid>
+</MudItem>
+
+@code
+{
+    private static readonly TextEditorModelKey IndexTextEditorModelKey = TextEditorModelKey.NewTextEditorModelKey();
+    private static readonly TextEditorViewModelKey IndexTextEditorViewModelKey = TextEditorViewModelKey.NewTextEditorViewModelKey();
+    private bool ShowProgress;
+    private string codeString { get; set; }
+    [Parameter]
+    public NetworkData NetworkData { get; set; }
+    [Parameter]
+    public string Result { get; set; }
+
+    [Parameter] public Action<NetworkData, string> OnGraphRefresh { get; set; }
+    private async void HandleOnSaveRequested(TextEditorModel obj)
+    {
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        TextEditorService.ModelRegisterTemplatedModel(
+            IndexTextEditorModelKey,
+            WellKnownModelKind.CSharp,
+            "placeholder.cs",
+            DateTime.UtcNow,
+            ".cs",
+            string.Empty);
+
+        TextEditorService.ViewModelRegister(
+            IndexTextEditorViewModelKey,
+            IndexTextEditorModelKey);
+
+        TextEditorService.ViewModelWith(
+            IndexTextEditorViewModelKey,
+            inViewModel => inViewModel with
+            {
+                OnSaveRequested = HandleOnSaveRequested
+                });
+    }
+
+
+    private async void RunScript()
+    {
+        if (!DatabaseConnectionService.IsDatabaseOpen)
+        {
+            Snackbar.Add("Database file must be open. ", Severity.Error);
+            return;
+        }
+
+        codeString = textEditor.MutableReferenceToTextEditor.GetAllText();
+
+        var options = ScriptOptions.Default.AddReferences(AssemblyMetadata.CreateFromFile(typeof(SliccDB.Fluent.DatabaseConnectionExtensions).Assembly.Location).GetReference())
+            .AddReferences(AssemblyMetadata.CreateFromFile(typeof(System.Collections.Generic.List<>).Assembly.Location).GetReference())
+            .AddReferences(AssemblyMetadata.CreateFromFile(typeof(Globals).Assembly.Location).GetReference())
+            .AddReferences(AssemblyMetadata.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location).GetReference())
+            .AddImports("SliccDB.Fluent", "System.Collections.Generic", "System.Linq");
+        try
+        {
+            ShowProgress = true;
+            StateHasChanged();
+            var entities = await CSharpScript.EvaluateAsync<object>(codeString, options, new Globals { Connection = DatabaseConnectionService.DatabaseConnection }).ConfigureAwait(false);
+            if (entities is HashSet<GraphEntity> graphEntities)
+            {
+                NetworkData = GraphDisplayService.GetGraphResult(graphEntities);
+                Result = JsonConvert.SerializeObject(graphEntities, new JsonSerializerSettings()
+                    {
+                        Formatting = Formatting.Indented
+                    });
+                OnGraphRefresh?.Invoke(NetworkData, Result);
+            }
+            else
+            if (entities is HashSet<Node> nodes)
+            {
+                NetworkData = GraphDisplayService.GetGraphResult(nodes.Cast<GraphEntity>().ToHashSet());
+                Result = JsonConvert.SerializeObject(nodes, new JsonSerializerSettings()
+                    {
+                        Formatting = Formatting.Indented
+                    });
+                OnGraphRefresh?.Invoke(NetworkData, Result);
+
+            }
+            else
+            if (entities is HashSet<Relation> relations)
+            {
+                NetworkData = GraphDisplayService.GetGraphResult(relations.Cast<GraphEntity>().ToHashSet());
+                Result = JsonConvert.SerializeObject(relations, new JsonSerializerSettings()
+                    {
+                        Formatting = Formatting.Indented
+                    });
+                OnGraphRefresh?.Invoke(NetworkData, Result);
+
+
+            }
+            else
+            {
+                OnGraphRefresh?.Invoke(GraphDisplayService.GetGraphResult(DatabaseConnectionService.DatabaseConnection.Entities()), JsonConvert.SerializeObject(DatabaseConnectionService.DatabaseConnection.Entities()));
+            }
+            ShowProgress = false;
+            StateHasChanged();
+        }
+        catch (CompilationErrorException errorException)
+        {
+            Snackbar.Add($"Compilation failed. Reason: {errorException.Message}", Severity.Error);
+        }
+
+
+    }
+
+    private TextEditorViewModelDisplay textEditor;
+
+}

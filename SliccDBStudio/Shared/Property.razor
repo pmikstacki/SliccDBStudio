@@ -1,0 +1,33 @@
+﻿@inject ISnackbar Snackbar;
+
+<MudGrid>
+    <MudItem xs="5">
+        <MudTextField Label="Name" @bind-Value="Value.Name" Required="true" Variant="Variant.Outlined"></MudTextField>
+    </MudItem>
+    <MudItem xs="5">
+        <MudTextField Label="Value" @bind-Value="Value.Value" Required="true" Variant="Variant.Outlined" ></MudTextField>
+    </MudItem>
+    <MudItem xs="2">
+        <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="DeletePropertyExecute"></MudIconButton>
+    </MudItem>
+</MudGrid>
+
+
+@code
+{
+    Data.Property value = new Data.Property();
+    private string oldValue;
+    [Parameter]
+    public Data.Property Value { get => value; set => this.value = value; }
+    [Parameter]
+    public List<Data.Property> OtherProperties { get; set; }
+
+    [Parameter] public Action<Data.Property> DeleteProperty { get; set; }
+    [Parameter] public EventCallback<Data.Property> ValueChanged { get; set; }
+
+
+    private void DeletePropertyExecute()
+    {
+        DeleteProperty?.Invoke(Value);
+    }
+}

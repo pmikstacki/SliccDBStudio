@@ -1,0 +1,183 @@
+﻿@page "/"
+@using SliccDBStudio.Services
+@using VisNetwork.Blazor.Models
+@using Microsoft.CodeAnalysis.CSharp.Scripting
+@using Microsoft.CodeAnalysis.Scripting
+@using SliccDB.Core
+@using Microsoft.CodeAnalysis
+@using BlazorTextEditor.RazorLib
+@using BlazorTextEditor.RazorLib.Model
+@using BlazorTextEditor.RazorLib.ViewModel
+@using SliccDB.Fluent
+@using SliccDBStudio.Data
+@using Node = SliccDB.Core.Node
+@using Property = SliccDBStudio.Data.Property
+@using System.Text.Json
+@using Newtonsoft.Json
+@using SliccDBStudio.Helpers
+@using JsonSerializer = System.Text.Json.JsonSerializer
+
+@inject DatabaseConnectionService DatabaseConnectionService
+@inject GraphDisplayService GraphDisplayService
+
+@inject ISnackbar Snackbar
+<style>
+    body {
+        height: 100vh;
+    }
+    .editor {
+        height: 200px;
+    }
+</style>
+<MudGrid>
+    <MudItem xs="12" Style="height: 60%;">
+        <MudGrid>
+            <MudItem xs="3">
+                <MudExpansionPanels Style="margin-top: 21px; margin-left: 15px;">
+                    <MudExpansionPanel Text="Create Node">
+                        <MudPaper>
+                            <PropertiesEditor Properties="@NewNodeProperties"></PropertiesEditor>
+                            <LabelEditor Labels="@NewNodeLabels"></LabelEditor>
+                            <MudButton OnClick="CreateNode">Create</MudButton>
+                        </MudPaper>
+                    </MudExpansionPanel>
+                    <MudExpansionPanel Text="Create Relation" MaxHeight="500">
+                        <MudPaper>
+                            <MudTextField Variant="Variant.Outlined" Label="Relation Name" @bind-Value="newRelationName"/>
+                            <MudTextField Variant="Variant.Outlined" Label="Source Node Hash" @bind-Value="sourceNodeHash"/>
+                            <MudTextField Variant="Variant.Outlined" Label="Target Node Hash" @bind-Value="targetNodeHash"/>
+                            <PropertiesEditor Properties="@NewRelationProperties"></PropertiesEditor>
+                            <LabelEditor Labels="@NewRelationLabels"></LabelEditor>
+                            <MudButton OnClick="CreateRelation">Create</MudButton>
+                        </MudPaper>
+                    </MudExpansionPanel>
+
+                    <MudExpansionPanel Text="Selected Entity Properties" MaxHeight="1000" @bind-IsExpanded="@isPropertyEditorExpanded">
+                    <EntityEditor SelectedEntity="@SelectedEntity" OnDatabaseChanged="DatabaseChanged"></EntityEditor>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+            </MudItem>
+            <MudItem xs="9">
+                <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Style="margin-top: 15px;">
+                <MudTabPanel Text="Graph">
+                    <GraphView Data="networkData" FillVertically="true" FillHorizontally="true" OnEntitySelect="OnEntitySelect"></GraphView>
+                </MudTabPanel>
+                <MudTabPanel Text="Json">
+                        <MudTextField Lines="40" Value="@result" Style="margin-bottom: 250px;"></MudTextField>
+                </MudTabPanel>
+                </MudTabs>
+            </MudItem>
+            <CodeEditor NetworkData="networkData" Result="result" OnGraphRefresh="OnGraphRefresh"></CodeEditor>
+
+        </MudGrid>
+    </MudItem>
+   
+</MudGrid>
+
+
+@code {
+    private bool isPropertyEditorExpanded { get; set; }
+    private string result;
+    private bool entityPropertiesDrawerOpen { get; set; } = false;
+    private List<Data.Property> NewNodeProperties = new List<Property>();
+    private List<Data.LabelModel> NewNodeLabels = new List<LabelModel>();
+    private List<Data.Property> NewRelationProperties = new List<Property>();
+    public GraphEntity SelectedEntity;
+    private string newRelationName;
+    private string targetNodeHash;
+    private string sourceNodeHash;
+    private List<Data.LabelModel> NewRelationLabels = new List<LabelModel>();
+    private Node newNode = new Node();
+    private NetworkData networkData;
+    private void RefreshGraph()
+    {
+        networkData = DatabaseConnectionService.GetDatabaseEntities();
+        result = JsonConvert.SerializeObject(DatabaseConnectionService.DatabaseConnection.Entities(), new JsonSerializerSettings()
+        {
+            Formatting = Formatting.Indented
+        });
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DatabaseConnectionService.OnDatabaseStateChanged += DatabaseChanged;
+    }
+
+
+    private void CreateNode(MouseEventArgs obj)
+    {
+        try
+        {
+            if (!DatabaseConnectionService.IsDatabaseOpen)
+            {
+                Snackbar.Add("Database must be opened!", Severity.Error);
+            }
+            if (!PropertiesHelpers.TryConvertProperties(NewNodeProperties, out var properties))
+            {
+                Snackbar.Add("Properties must have unique names!", Severity.Error);
+                return;
+            }
+            DatabaseConnectionService.DatabaseConnection.CreateNode(properties, NewNodeLabels.Select(x => x.Label).ToHashSet());
+            RefreshGraph();
+        }
+        catch (SliccDB.Exceptions.SliccDbException ex)
+        {
+            Snackbar.Add($"Database returned an error: {ex.Message}", Severity.Error);
+        }
+    }
+
+   
+
+    private void CreateRelation()
+    {
+        try
+        {
+            if (!DatabaseConnectionService.IsDatabaseOpen)
+            {
+                Snackbar.Add("Database must be opened!", Severity.Error);
+            }
+            if (!PropertiesHelpers.TryConvertProperties(NewNodeProperties, out var properties))
+            {
+                Snackbar.Add("Properties must have unique names!", Severity.Error);
+                return;
+            }
+            DatabaseConnectionService.DatabaseConnection.CreateRelation(newRelationName, hs => hs.FirstOrDefault(x => x.Hash == sourceNodeHash), hs => hs.FirstOrDefault(x => x.Hash == targetNodeHash), properties, NewNodeLabels.Select(x => x.Label).ToHashSet());
+            RefreshGraph();
+        }
+        catch (SliccDB.Exceptions.SliccDbException ex)
+        {
+            Snackbar.Add($"Database returned an error: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private void OnEntitySelect(string hash)
+    {
+        if (hash == null)
+        {
+            isPropertyEditorExpanded = false;
+            StateHasChanged();
+            return;
+        }
+
+        var entity = DatabaseConnectionService.DatabaseConnection.Entities().FirstOrDefault(x => x.Hash == hash);
+        if (entity == null)
+            entity = DatabaseConnectionService.DatabaseConnection.Relations().FirstOrDefault(r => r.Hash == hash);
+        SelectedEntity = entity;
+        isPropertyEditorExpanded = true;
+        StateHasChanged();
+    }
+
+    private void DatabaseChanged()
+    {
+        RefreshGraph();
+    }
+
+    private void OnGraphRefresh(NetworkData arg1, string arg2)
+    {
+        networkData = arg1;
+        result = arg2;
+        StateHasChanged();
+    }
+
+}

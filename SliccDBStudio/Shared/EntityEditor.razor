@@ -1,0 +1,81 @@
+﻿@using SliccDB.Core
+@using SliccDBStudio.Data
+@using SliccDBStudio.Helpers
+@using SliccDBStudio.Services
+@inject DatabaseConnectionService DatabaseConnectionService
+@if (SelectedEntity != null)
+{
+    
+    <MudText Typo="Typo.h6">@SelectedEntity.Hash</MudText>
+    @if (SelectedEntity is Relation relation)
+    {
+        <MudTextField @bind-Value="@relation.RelationName" Label="Relation Name"></MudTextField>
+    }
+    <PropertiesEditor Properties="GraphProperties"></PropertiesEditor>
+    <LabelEditor Labels="@GraphLabels"></LabelEditor>
+    <MudButton StartIcon="@Icons.Material.Filled.Update" OnClick="Update">Update</MudButton>
+    <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="Delete">Delete</MudButton>
+}
+
+@code
+{
+    private GraphEntity selectedEntity;
+    [Parameter]
+    public GraphEntity SelectedEntity
+    {
+        get => selectedEntity;
+        set
+        {
+            selectedEntity = value;
+            if(value != null)
+                RefreshEditors();
+        }
+    }
+
+    [Parameter] public Action OnDatabaseChanged { get; set; }
+
+    public List<Data.Property> GraphProperties { get; set; }
+
+    public List<Data.LabelModel> GraphLabels { get; set; }
+
+    void RefreshEditors()
+    {
+        GraphLabels = SelectedEntity.Labels.Select(p =>
+        {
+            return new LabelModel()
+            {
+                Label = p
+            };
+        }).ToList();
+
+        GraphProperties = SelectedEntity.Properties.Select(p =>
+        {
+            return new Data.Property()
+            {
+                Name = p.Key,
+                Value = p.Value
+            };
+        }).ToList();
+    }
+
+
+    private void Delete()
+    {
+        DatabaseConnectionService.DatabaseConnection.Delete(SelectedEntity);
+        OnDatabaseChanged?.Invoke();
+        
+    }
+
+    private void Update()
+    {
+        if(PropertiesHelpers.TryConvertProperties(GraphProperties, out var properties))
+        {
+            SelectedEntity.Properties = properties;
+        }
+
+        SelectedEntity.Labels = GraphLabels.Select(x => x.Label).ToHashSet();
+
+        DatabaseConnectionService.DatabaseConnection.Update(SelectedEntity);
+        OnDatabaseChanged?.Invoke();
+    }
+}

@@ -1,0 +1,13 @@
+﻿@using SliccDBStudio.Data
+
+<MudChip Color="Color.Default" OnClose="Closed">@Model.Label</MudChip>
+@code {
+    [Parameter] public LabelModel Model { get; set; }
+    [Parameter] public Action<LabelModel> OnRemoveLabel { get; set; }
+
+    private void Closed()
+    {
+        OnRemoveLabel?.Invoke(Model);
+    }
+
+}

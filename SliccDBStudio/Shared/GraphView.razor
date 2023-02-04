@@ -1,0 +1,76 @@
+﻿@using VisNetwork.Blazor.Models
+@using Edge = VisNetwork.Blazor.Models.Edge
+@using SliccDBStudio.Services
+@inject GraphDisplayService GraphDisplayService
+<MudPaper Elevation="1" Style="position: fixed; top: 140px; right: 15px; left: 25%; bottom: 320px;">
+    <Network Id="my-id" @ref="@network"  Data="@_data" Options="@EditorConstructionOptions" style="@styleString" OnSelect="ClickCallback" />
+</MudPaper>
+
+
+@code
+{
+    private NetworkData _data = new NetworkData();
+    private Network network;
+    [Parameter]
+    public NetworkData Data
+    {
+        get => _data;
+        set
+        {
+            if (value != null)
+            {
+                _data = value;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private string lastClickedHash;
+    [Parameter] public double Width { get; set; }
+    [Parameter] public double Height { get; set; }
+    [Parameter] public bool FillHorizontally { get; set; }
+    [Parameter] public bool FillVertically { get; set; }
+    [Parameter] public Action<string> OnEntitySelect { get; set; }
+
+    private string styleString => $"width: {(FillVertically ? "100%" : Width.ToString() + "px")}; height: {(FillVertically ? "100%" : Height.ToString() + "px")};";
+
+    private NetworkOptions EditorConstructionOptions(Network network)
+    {
+        return new NetworkOptions
+        {
+            AutoResize = true,
+            Nodes = new NodeOption
+            {
+                BorderWidth = 1
+            },
+            Edges = new EdgeOption
+            {
+                Length = 300,
+                Arrows = new Arrows
+                {
+                    To = new ArrowsOptions
+                    {
+                        Enabled = true
+                    }
+                }
+               
+            }
+        };
+    }
+
+    
+
+    protected override Task OnInitializedAsync()
+    {
+       
+        return base.OnInitializedAsync();
+    }
+
+
+    private void ClickCallback(ClickEvent obj)
+    {
+        var entity = obj.Nodes.Count == 1 ? obj.Nodes : obj.Edges;
+        OnEntitySelect(entity.FirstOrDefault());
+        lastClickedHash = entity.FirstOrDefault();
+    }
+}

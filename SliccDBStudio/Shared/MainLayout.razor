@@ -1,0 +1,44 @@
+﻿@using SliccDBStudio.Services
+@inherits LayoutComponentBase
+@inject DatabaseConnectionService DatabaseConnectionService
+<MudThemeProvider IsDarkMode="true" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar>
+        <MudTooltip Text="Open Database File">
+            <MudIconButton Icon="@Icons.Material.Filled.FileOpen" Color="Color.Inherit" Edge="Edge.Start" OnClick="OpenDatabase" />
+        </MudTooltip>
+        <MudTooltip Text="Open Database File">
+            <MudIconButton Icon="@Icons.Material.Filled.Create" Color="Color.Inherit" Edge="Edge.Start" OnClick="CreateDatabase"/>
+        </MudTooltip>
+        <MudTooltip Text="Open Database File">
+            <MudIconButton Icon="@Icons.Material.Filled.Save" Color="Color.Inherit" Edge="Edge.Start" Disabled="@(!DatabaseConnectionService.IsDatabaseOpen)" OnClick="CreateDatabase"/>
+        </MudTooltip>
+        <MudText Typo="Typo.h6">
+            SliccDB Studio @(DatabaseConnectionService.IsDatabaseOpen ? 
+                               " - " + Path.GetFileNameWithoutExtension(DatabaseConnectionService.DatabaseConnection.FilePath) : "")
+        </MudText>
+    </MudAppBar>
+
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Style="padding-right: 12px; padding-left: 0px;">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+@code {
+
+    async void OpenDatabase()
+    {
+        await DatabaseConnectionService.OpenDatabaseAsync();
+        StateHasChanged();
+    }
+
+    async void CreateDatabase()
+    {
+        await DatabaseConnectionService.CreateDatabaseAsync();
+        StateHasChanged();
+    }
+}>

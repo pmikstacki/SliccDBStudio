@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\mixerek\.nuget\packages\;C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.4.0</NuGetToolVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <SourceRoot Include="C:\Users\mixerek\.nuget\packages\" />
+    <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
+  </ItemGroup>
+  <ImportGroup Condition=" '$(TargetFramework)' == '' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildMultiTargeting\VisNetwork.Blazor.props" Condition="Exists('$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildMultiTargeting\VisNetwork.Blazor.props')" />
+    <Import Project="$(NuGetPackageRoot)mudblazor\6.1.7\buildMultiTargeting\MudBlazor.props" Condition="Exists('$(NuGetPackageRoot)mudblazor\6.1.7\buildMultiTargeting\MudBlazor.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildMultiTargeting\BlazorALaCarte.Shared.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildMultiTargeting\BlazorALaCarte.Shared.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildMultiTargeting\BlazorALaCarte.TreeView.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildMultiTargeting\BlazorALaCarte.TreeView.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildMultiTargeting\BlazorALaCarte.DialogNotification.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildMultiTargeting\BlazorALaCarte.DialogNotification.props')" />
+    <Import Project="$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildMultiTargeting\Blazor.Text.Editor.props" Condition="Exists('$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildMultiTargeting\Blazor.Text.Editor.props')" />
+  </ImportGroup>
+  <ImportGroup Condition=" '$(TargetFramework)' == 'net7.0-android' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildTransitive\VisNetwork.Blazor.props" Condition="Exists('$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildTransitive\VisNetwork.Blazor.props')" />
+    <Import Project="$(NuGetPackageRoot)mudblazor\6.1.7\buildTransitive\MudBlazor.props" Condition="Exists('$(NuGetPackageRoot)mudblazor\6.1.7\buildTransitive\MudBlazor.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.components.webview.maui\7.0.49\build\Microsoft.AspNetCore.Components.WebView.Maui.props" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.components.webview.maui\7.0.49\build\Microsoft.AspNetCore.Components.WebView.Maui.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildTransitive\BlazorALaCarte.Shared.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildTransitive\BlazorALaCarte.Shared.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildTransitive\BlazorALaCarte.TreeView.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildTransitive\BlazorALaCarte.TreeView.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildTransitive\BlazorALaCarte.DialogNotification.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildTransitive\BlazorALaCarte.DialogNotification.props')" />
+    <Import Project="$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildTransitive\Blazor.Text.Editor.props" Condition="Exists('$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildTransitive\Blazor.Text.Editor.props')" />
+  </ImportGroup>
+  <ImportGroup Condition=" '$(TargetFramework)' == 'net7.0-ios' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildTransitive\VisNetwork.Blazor.props" Condition="Exists('$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildTransitive\VisNetwork.Blazor.props')" />
+    <Import Project="$(NuGetPackageRoot)mudblazor\6.1.7\buildTransitive\MudBlazor.props" Condition="Exists('$(NuGetPackageRoot)mudblazor\6.1.7\buildTransitive\MudBlazor.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.components.webview.maui\7.0.49\build\Microsoft.AspNetCore.Components.WebView.Maui.props" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.components.webview.maui\7.0.49\build\Microsoft.AspNetCore.Components.WebView.Maui.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildTransitive\BlazorALaCarte.Shared.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildTransitive\BlazorALaCarte.Shared.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildTransitive\BlazorALaCarte.TreeView.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildTransitive\BlazorALaCarte.TreeView.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildTransitive\BlazorALaCarte.DialogNotification.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildTransitive\BlazorALaCarte.DialogNotification.props')" />
+    <Import Project="$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildTransitive\Blazor.Text.Editor.props" Condition="Exists('$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildTransitive\Blazor.Text.Editor.props')" />
+  </ImportGroup>
+  <ImportGroup Condition=" '$(TargetFramework)' == 'net7.0-maccatalyst' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildTransitive\VisNetwork.Blazor.props" Condition="Exists('$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildTransitive\VisNetwork.Blazor.props')" />
+    <Import Project="$(NuGetPackageRoot)mudblazor\6.1.7\buildTransitive\MudBlazor.props" Condition="Exists('$(NuGetPackageRoot)mudblazor\6.1.7\buildTransitive\MudBlazor.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.components.webview.maui\7.0.49\build\Microsoft.AspNetCore.Components.WebView.Maui.props" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.components.webview.maui\7.0.49\build\Microsoft.AspNetCore.Components.WebView.Maui.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildTransitive\BlazorALaCarte.Shared.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildTransitive\BlazorALaCarte.Shared.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildTransitive\BlazorALaCarte.TreeView.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildTransitive\BlazorALaCarte.TreeView.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildTransitive\BlazorALaCarte.DialogNotification.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildTransitive\BlazorALaCarte.DialogNotification.props')" />
+    <Import Project="$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildTransitive\Blazor.Text.Editor.props" Condition="Exists('$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildTransitive\Blazor.Text.Editor.props')" />
+  </ImportGroup>
+  <ImportGroup Condition=" '$(TargetFramework)' == 'net7.0-windows10.0.19041.0' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildTransitive\VisNetwork.Blazor.props" Condition="Exists('$(NuGetPackageRoot)visnetwork.blazor\2.0.0\buildTransitive\VisNetwork.Blazor.props')" />
+    <Import Project="$(NuGetPackageRoot)mudblazor\6.1.7\buildTransitive\MudBlazor.props" Condition="Exists('$(NuGetPackageRoot)mudblazor\6.1.7\buildTransitive\MudBlazor.props')" />
+    <Import Project="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\microsoft.windows.sdk.buildtools\10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\microsoft.windows.sdk.buildtools\10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.windowsappsdk\1.1.5\buildTransitive\Microsoft.WindowsAppSDK.props" Condition="Exists('$(NuGetPackageRoot)microsoft.windowsappsdk\1.1.5\buildTransitive\Microsoft.WindowsAppSDK.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.components.webview.maui\7.0.49\build\Microsoft.AspNetCore.Components.WebView.Maui.props" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.components.webview.maui\7.0.49\build\Microsoft.AspNetCore.Components.WebView.Maui.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildTransitive\BlazorALaCarte.Shared.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.shared\1.5.0\buildTransitive\BlazorALaCarte.Shared.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildTransitive\BlazorALaCarte.TreeView.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.treeview\1.5.0\buildTransitive\BlazorALaCarte.TreeView.props')" />
+    <Import Project="$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildTransitive\BlazorALaCarte.DialogNotification.props" Condition="Exists('$(NuGetPackageRoot)blazoralacarte.dialognotification\1.5.0\buildTransitive\BlazorALaCarte.DialogNotification.props')" />
+    <Import Project="$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildTransitive\Blazor.Text.Editor.props" Condition="Exists('$(NuGetPackageRoot)blazor.text.editor\7.0.0\buildTransitive\Blazor.Text.Editor.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0-android' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\mixerek\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.3</PkgMicrosoft_CodeAnalysis_Analyzers>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0-ios' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\mixerek\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.3</PkgMicrosoft_CodeAnalysis_Analyzers>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0-maccatalyst' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\mixerek\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.3</PkgMicrosoft_CodeAnalysis_Analyzers>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0-windows10.0.19041.0' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMicrosoft_WindowsAppSDK Condition=" '$(PkgMicrosoft_WindowsAppSDK)' == '' ">C:\Users\mixerek\.nuget\packages\microsoft.windowsappsdk\1.1.5</PkgMicrosoft_WindowsAppSDK>
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\mixerek\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.3</PkgMicrosoft_CodeAnalysis_Analyzers>
+  </PropertyGroup>
+</Project>
