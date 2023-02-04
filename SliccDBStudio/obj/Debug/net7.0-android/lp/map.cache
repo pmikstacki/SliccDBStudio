@@ -8,6 +8,8 @@ Microsoft.Maui.Controls.Compatibility.aar
 maui.aar
 Microsoft.Maui.aar
 Microsoft.Maui.Essentials.aar
+CommunityToolkit.Maui.Core.dll
+CommunityToolkit.Maui.dll
 GoogleGson.dll
 Microsoft.AspNetCore.Components.WebView.Maui.dll
 Microsoft.Maui.Graphics.dll
@@ -154,10 +156,8 @@ androidx.exifinterface.exifinterface.aar
 androidx.browser.browser.aar
 gifdecoder.aar
 glide.aar
+CommunityToolkit.Maui.Core.aar
+CommunityToolkit.Maui.aar
 GoogleGson.aar
 Microsoft.AspNetCore.Components.WebView.Maui.aar
 Xamarin.Google.Crypto.Tink.Android.aar
-CommunityToolkit.Maui.Core.dll
-CommunityToolkit.Maui.dll
-CommunityToolkit.Maui.Core.aar
-CommunityToolkit.Maui.aar

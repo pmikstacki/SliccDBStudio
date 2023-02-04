@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ViewPager2">
-        <attr name="android:orientation"/>
-    </declare-styleable>
+    <id name="view_tree_on_back_pressed_dispatcher_owner"/>
 </resources>
