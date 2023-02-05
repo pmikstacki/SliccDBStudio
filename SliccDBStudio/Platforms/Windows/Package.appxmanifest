@@ -6,14 +6,14 @@
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
-  <Identity Name="maui-package-name-placeholder" Publisher="CN=User Name" Version="0.0.0.0" />
+  <Identity Name="SliccDBStudio" Publisher="CN=Piotr Mikstacki" Version="0.0.4.0" />
 
   <mp:PhoneIdentity PhoneProductId="9BE5ADA3-8DFB-47E1-865C-E664035542C5" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>$placeholder$</DisplayName>
-    <PublisherDisplayName>User Name</PublisherDisplayName>
-    <Logo>Resources\Images\$placeholder$.png</Logo>
+    <DisplayName>SliccDB Studio</DisplayName>
+    <PublisherDisplayName>Piotr Mikstacki</PublisherDisplayName>
+    <Logo>Resources\Images\appicon.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -26,21 +26,16 @@
   </Resources>
 
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="MauiProgram">
       <uap:VisualElements
-        DisplayName="$placeholder$"
-        Description="$placeholder$"
-        Square150x150Logo="Resources\Images\$placeholder$.png"
-        Square44x44Logo="Resources\Images\$placeholder$.png"
+        DisplayName="SliccDB Studio"
+        Description="SliccDB Companion Application"
+        Square150x150Logo="Resources\Images\appicon.png"
+        Square44x44Logo="Resources\Images\appicon.png"
         BackgroundColor="transparent">
-        <uap:DefaultTile Square71x71Logo="Resources\Images\$placeholder$.png" Wide310x150Logo="Resources\Images\$placeholder$.png" Square310x310Logo="Resources\Images\$placeholder$.png" >
-          <uap:ShowNameOnTiles>
-            <uap:ShowOn Tile="square150x150Logo"/>
-            <uap:ShowOn Tile="wide310x150Logo"/>
-            <uap:ShowOn Tile="square310x310Logo"/>
-          </uap:ShowNameOnTiles>
+        <uap:DefaultTile Square71x71Logo="Resources\Images\appicon.png" Wide310x150Logo="Resources\Images\appicon.png" Square310x310Logo="Resources\Images\appicon.png"  ShortName="appicon">
         </uap:DefaultTile >
-        <uap:SplashScreen Image="Resources\Images\$placeholder$.png" />
+        <uap:SplashScreen Image="Resources\AppIcon\splash.png" />
       </uap:VisualElements>
     </Application>
   </Applications>

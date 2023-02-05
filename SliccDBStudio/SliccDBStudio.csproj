@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
         <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
         <OutputType>Exe</OutputType>
@@ -30,17 +29,27 @@
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
         <DefaultLanguage>en-us</DefaultLanguage>
+        <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+        <PackageCertificateThumbprint>6DC37FD74DDB0077E7C7C6086BF04A583FE5B2FF</PackageCertificateThumbprint>
+        <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+        <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+        <AppxPackageDir>C:\Users\mixerek\OneDrive\Desktop\</AppxPackageDir>
+        <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+        <GenerateTestArtifacts>True</GenerateTestArtifacts>
+        <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     </PropertyGroup>
 
     <ItemGroup>
         <!-- App Icon -->
 
         <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+        <MauiSplashScreen Include="Resources\AppIcon\appicon.svg" Color="#512BD4" BaseSize="128,128">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </MauiSplashScreen>
 
         <!-- Images -->
         <MauiImage Include="Resources\Images\*" />
-        <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
         <!-- Custom Fonts -->
         <MauiFont Include="Resources\Fonts\*" />
@@ -56,18 +65,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <MauiImage Remove="Resources\Images\%24placeholder%24.scale-400.png" />
+      <None Remove="Resources\AppIcon\splash.png" />
     </ItemGroup>
 
-    <ItemGroup>
-      <None Remove="%24placeholder%24.scale-100.png" />
-      <None Remove="%24placeholder%24.scale-200.png" />
-      <None Remove="%24placeholder%24.scale-400.png" />
+	<ItemGroup>
+      <Content Include="Resources\AppIcon\appicon.png" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="Resources\Images\$placeholder$.scale-400.png" />
-    </ItemGroup>
+	<ItemGroup>
+	  <Content Include="Resources\AppIcon\splash.png" />
+	</ItemGroup>
 
     <ItemGroup>
       <None Include="Lessons\Update Entities.json">
