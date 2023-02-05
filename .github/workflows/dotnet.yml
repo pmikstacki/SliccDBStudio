@@ -24,9 +24,5 @@ jobs:
       run: |
           dotnet workload install maccatalyst --ignore-failed-sources
           dotnet workload install maui --ignore-failed-sources
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
     - name: Publish
       run: dotnet publish --configuration Release 
