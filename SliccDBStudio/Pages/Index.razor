@@ -13,13 +13,15 @@
 @using Node = SliccDB.Core.Node
 @using Property = SliccDBStudio.Data.Property
 @using System.Text.Json
+@using Markdig
 @using Newtonsoft.Json
 @using SliccDBStudio.Helpers
 @using JsonSerializer = System.Text.Json.JsonSerializer
 
 @inject DatabaseConnectionService DatabaseConnectionService
 @inject GraphDisplayService GraphDisplayService
-
+@inject IDialogService DialogService
+@inject LessonService LessonService
 @inject ISnackbar Snackbar
 <style>
     body {
@@ -29,6 +31,13 @@
         height: 200px;
     }
 </style>
+
+<MudDrawer @bind-Open="@lessonDrawerOpen" Variant="DrawerVariant.Temporary" Width="500px" @ref="drawer">
+    <div>
+        @((MarkupString) lessonText)
+    </div>
+</MudDrawer>
+
 <MudGrid>
     <MudItem xs="12" Style="height: 60%;">
         <MudGrid>
@@ -53,9 +62,23 @@
                     </MudExpansionPanel>
 
                     <MudExpansionPanel Text="Selected Entity Properties" MaxHeight="1000" @bind-IsExpanded="@isPropertyEditorExpanded">
-                    <EntityEditor SelectedEntity="@SelectedEntity" OnDatabaseChanged="DatabaseChanged"></EntityEditor>
-                </MudExpansionPanel>
-            </MudExpansionPanels>
+                        <EntityEditor SelectedEntity="@SelectedEntity" OnDatabaseChanged="DatabaseChanged"></EntityEditor>
+                    </MudExpansionPanel>
+                    <MudExpansionPanel Text="Lessons">
+                        <MudTable Items="@LessonService.Lessons">
+                            <HeaderContent>
+                                <MudTh>Name</MudTh>
+                                <MudTh>Select</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd >@context.Name</MudTd>
+                                <MudTd T="Lesson" Field="Name" Title="Select">
+                                    <MudButton OnClick="@(() => OpenTemplate(context))">Select</MudButton>
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
             </MudItem>
             <MudItem xs="9">
                 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Style="margin-top: 15px;">
@@ -78,7 +101,8 @@
 @code {
     private bool isPropertyEditorExpanded { get; set; }
     private string result;
-    private bool entityPropertiesDrawerOpen { get; set; } = false;
+    private string lessonText;
+    private bool lessonDrawerOpen { get; set; } = false;
     private List<Data.Property> NewNodeProperties = new List<Property>();
     private List<Data.LabelModel> NewNodeLabels = new List<LabelModel>();
     private List<Data.Property> NewRelationProperties = new List<Property>();
@@ -89,6 +113,8 @@
     private List<Data.LabelModel> NewRelationLabels = new List<LabelModel>();
     private Node newNode = new Node();
     private NetworkData networkData;
+    private MudMarkdown markdown;
+    private MudDrawer drawer;
     private void RefreshGraph()
     {
         networkData = DatabaseConnectionService.GetDatabaseEntities();
@@ -177,6 +203,16 @@
     {
         networkData = arg1;
         result = arg2;
+        StateHasChanged();
+    }
+
+    private async Task OpenTemplate(Lesson context)
+    {
+        using var client = new HttpClient();
+        var content = await client.GetStringAsync(context.Url);
+        lessonText = Markdown.ToHtml(content);
+
+        lessonDrawerOpen = true;
         StateHasChanged();
     }
 

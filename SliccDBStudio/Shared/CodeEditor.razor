@@ -3,6 +3,8 @@
 @using BlazorTextEditor.RazorLib.Model
 @using BlazorTextEditor.RazorLib.ViewModel
 @using BlazorTextEditor.RazorLib
+@using BlazorTextEditor.RazorLib.Cursor
+@using BlazorTextEditor.RazorLib.Store.TextEditorCase.Model
 @using Microsoft.CodeAnalysis
 @using Microsoft.CodeAnalysis.CSharp.Scripting
 @using Microsoft.CodeAnalysis.Scripting
@@ -12,10 +14,13 @@
 @using SliccDBStudio.Data
 @using VisNetwork.Blazor.Models
 @using Node = SliccDB.Core.Node
+@using System.Collections.Immutable
 @inject ISnackbar Snackbar
 @inject ITextEditorService TextEditorService
 @inject GraphDisplayService GraphDisplayService
 @inject DatabaseConnectionService DatabaseConnectionService
+@inject IDialogService DialogService
+
 <MudItem xs="12" Style="position: fixed;bottom: 0px;width: 100%;">
     <MudGrid>
         <MudItem xs="11">
@@ -44,7 +49,6 @@
     {
 
     }
-
     protected override async Task OnInitializedAsync()
     {
 

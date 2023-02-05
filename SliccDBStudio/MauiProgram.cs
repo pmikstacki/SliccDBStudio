@@ -5,6 +5,7 @@ using MudBlazor.Services;
 using SliccDBStudio.Services;
 using VisNetwork.Blazor;
 using BlazorTextEditor.RazorLib;
+using MudBlazor;
 
 
 namespace SliccDBStudio;
@@ -31,7 +32,10 @@ public static class MauiProgram
 
         builder.Services.AddBlazorTextEditor();
         builder.Services.AddMudServices();
+        builder.Services.AddMudMarkdownServices();
+
         builder.Services.AddSingleton<DatabaseConnectionService>();
+        builder.Services.AddSingleton<LessonService>();
         builder.Services.AddSingleton<GraphDisplayService>();
         builder.Services.AddVisNetwork();
 
