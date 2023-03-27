@@ -2,7 +2,7 @@
 Companion app for [SliccDB](https://github.com/pmikstacki/SliccDB). It is really just a quick mash of Blazor components in WPF frame. It serves its purpose tho!
 
 # Screenshots
-
+![](Screenshot.png)
 
 # Features
 * Execute C# expressions on the database with Examples!
