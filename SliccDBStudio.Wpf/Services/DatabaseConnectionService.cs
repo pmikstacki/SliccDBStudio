@@ -1,5 +1,10 @@
-﻿using System.Collections.Immutable;
-using CommunityToolkit.Maui.Storage;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Win32;
 using SliccDB.Fluent;
 using SliccDB.Serialization;
 using VisNetwork.Blazor.Models;
@@ -18,34 +23,32 @@ public class DatabaseConnectionService
         _graphDisplayService = graphDisplayService;
     }
 
-    public async Task OpenDatabaseAsync()
+    public void OpenDatabase()
     {
-        var result = await FilePicker.Default.PickAsync(new PickOptions()
+
+        OpenFileDialog openFile = new OpenFileDialog();
+        openFile.Filter = "SliccDB | *.sliccdb";
+        if (openFile.ShowDialog() == true)
         {
-            FileTypes = new FilePickerFileType(
-                new Dictionary<DevicePlatform, IEnumerable<string>>()
-                {
-                    { DevicePlatform.WinUI, new[] { "*.sliccdb" }}
-                })
-        });
-        if (result != null)
-        {
-            _databaseConnection = new DatabaseConnection(result.FullPath, true);
+            _databaseConnection = new DatabaseConnection(openFile.FileName, true);
             OnDatabaseStateChanged?.Invoke();
-
         }
-
     }
 
-    public async Task CreateDatabaseAsync()
+    public void CreateDatabase()
     {
-        var result = await FileSaver.Default.SaveAsync("database.sliccdb", new MemoryStream(new byte[1]), CancellationToken.None);
-        if (string.IsNullOrEmpty(result))
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        saveFileDialog.Filter = "SliccDB | *.sliccdb";
+        if (saveFileDialog.ShowDialog() == true)
         {
-            _databaseConnection = new DatabaseConnection(result, true);
+            _databaseConnection = new DatabaseConnection(saveFileDialog.FileName, true);
             OnDatabaseStateChanged?.Invoke();
         }
+    }
 
+    public void SaveDatabase()
+    {
+       _databaseConnection.SaveDatabase();
     }
 
     public NetworkData GetDatabaseEntities()

@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <RootNamespace>SliccDBStudio</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Blazor.Text.Editor" Version="7.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="7.0.59" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="SliccDB" Version="0.1.1.4" />
+      <PackageReference Include="VisNetwork.Blazor" Version="2.0.0" />
+      <PackageReference Include="MarkDig" Version="0.30.4" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.4.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+      <PackageReference Include="MudBlazor" Version="6.1.7" />
+      <PackageReference Include="MudBlazor.Markdown" Version="0.1.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    </ItemGroup>
+
+	<ItemGroup>
+      <None Include="Lessons\Create Node.json" />
+      <None Include="Lessons\Create Relation.json" />
+      <None Include="Lessons\Update Entities.json" />
+    </ItemGroup>
+
+</Project>

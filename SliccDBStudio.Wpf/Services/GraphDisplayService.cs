@@ -5,6 +5,7 @@ using Node = VisNetwork.Blazor.Models.Node;
 using Edge = VisNetwork.Blazor.Models.Edge;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace SliccDBStudio.Services;
 
