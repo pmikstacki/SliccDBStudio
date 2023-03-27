@@ -138,12 +138,14 @@
             if (!DatabaseConnectionService.IsDatabaseOpen)
             {
                 Snackbar.Add("Database must be opened!", Severity.Error);
+                return;
             }
             if (!PropertiesHelpers.TryConvertProperties(NewNodeProperties, out var properties))
             {
                 Snackbar.Add("Properties must have unique names!", Severity.Error);
                 return;
             }
+
             DatabaseConnectionService.DatabaseConnection.CreateNode(properties, NewNodeLabels.Select(x => x.Label).ToHashSet());
             RefreshGraph();
         }

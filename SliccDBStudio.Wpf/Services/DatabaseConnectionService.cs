@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using SliccDB.Core;
 using SliccDB.Fluent;
 using SliccDB.Serialization;
 using VisNetwork.Blazor.Models;
@@ -13,9 +14,9 @@ namespace SliccDBStudio.Services;
 
 public class DatabaseConnectionService
 {
-    private DatabaseConnection _databaseConnection;
+    private DatabaseConnection? _databaseConnection;
     public DatabaseConnection DatabaseConnection => _databaseConnection;
-    public bool IsDatabaseOpen => _databaseConnection != null;
+    public bool IsDatabaseOpen => _databaseConnection != null && _databaseConnection.ConnectionStatus == ConnectionStatus.Connected;
     private readonly GraphDisplayService _graphDisplayService;
     public Action OnDatabaseStateChanged;
     public DatabaseConnectionService(GraphDisplayService graphDisplayService)

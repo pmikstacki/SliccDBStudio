@@ -6,6 +6,8 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <RootNamespace>SliccDBStudio</RootNamespace>
+        <AssemblyName>SliccDBStudio</AssemblyName>
+        <ApplicationIcon>wwwroot\appicon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,7 +21,6 @@
       <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
       <PackageReference Include="MudBlazor" Version="6.1.7" />
       <PackageReference Include="MudBlazor.Markdown" Version="0.1.0" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     </ItemGroup>
 
 	<ItemGroup>
